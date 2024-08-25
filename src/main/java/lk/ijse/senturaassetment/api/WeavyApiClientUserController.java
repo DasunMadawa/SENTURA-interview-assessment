@@ -50,4 +50,48 @@ public class WeavyApiClientUserController {
 
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> updateCustomer(@RequestBody UserDTO userDTO, @PathVariable("id") String id) {
+
+        try {
+            weavyApiClientUserService.updateUser(userDTO , id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+
+        } catch (Exception exception ) {
+            System.out.println(exception);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        }
+
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getCustomer(@PathVariable("id") String cId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(weavyApiClientUserService.getUserDetails(cId));
+
+        } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        }
+
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<UserDTO> deleteCustomer(@PathVariable("id") String userId) {
+        try {
+            weavyApiClientUserService.deleteUser(userId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        }
+
+    }
+
 }
